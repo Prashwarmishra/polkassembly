@@ -11,8 +11,10 @@ interface Props{
 	text?: string
 	timeout?: number
 	timeoutText?: string
+	size?: 'mini' | 'tiny' | 'small' | 'large' | 'big' | 'huge' | 'massive',
 }
-const Loader = ({ className, text = 'Loading', timeout, timeoutText = 'Process timeout' }: Props) => {
+
+const Loader = ({ className, text = 'Loading', timeout, timeoutText = 'Process timeout', size }: Props) => {
 	const [displayLoader, setDisplayLoader] = useState(true);
 
 	useEffect(() => {
@@ -29,7 +31,7 @@ const Loader = ({ className, text = 'Loading', timeout, timeoutText = 'Process t
 			{displayLoader
 				?
 				<Dimmer inverted active className={className}>
-					<SUILoader inverted>{text}</SUILoader>
+					<SUILoader inverted className={size ? size : ''}>{text}</SUILoader>
 				</Dimmer>
 				:
 				<div className={`${className} error-text`}>{timeoutText}</div>
