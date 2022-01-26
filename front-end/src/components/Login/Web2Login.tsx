@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useContext } from 'react';
-import { FieldError,useForm } from 'react-hook-form';
+import { FieldError, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 
@@ -19,33 +19,35 @@ import messages from '../../util/messages';
 import * as validation from '../../util/validation';
 
 interface Props {
-	className?: string
-	toggleWeb2Login: () => void
+  className?: string;
+  toggleWeb2Login: () => void;
 }
 
-const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
+const LoginForm = ({ className, toggleWeb2Login }: Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
 	const [loginMutation, { loading, error }] = useLoginMutation();
 	const { errors, handleSubmit, register } = useForm();
 
-	const handleSubmitForm = (data:Record<string, any>):void => {
+	const handleSubmitForm = (data: Record<string, any>): void => {
 		const { username, password } = data;
 
-		if (username && password){
+		if (username && password) {
 			loginMutation({
 				variables: {
 					password,
 					username
 				}
-			}).then(({ data }) => {
-				if (data && data.login && data.login.token) {
-					handleTokenChange(data.login.token, currentUser);
-					history.goBack();
-				}
-			}).catch((e) => {
-				console.error('Login error', e);
-			});
+			})
+				.then(({ data }) => {
+					if (data && data.login && data.login.token) {
+						handleTokenChange(data.login.token, currentUser);
+						history.goBack();
+					}
+				})
+				.catch((e) => {
+					console.error('Login error', e);
+				});
 		}
 	};
 
@@ -64,10 +66,26 @@ const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
 						ref={register(validation.username)}
 						type='text'
 					/>
-					{(errors.username as FieldError)?.type === 'maxLength' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_MAXLENGTH_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'minLength' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_MINLENGTH_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'pattern' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_PATTERN_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'required' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_REQUIRED_ERROR}</span>}
+					{(errors.username as FieldError)?.type === 'maxLength' && (
+						<span className={'errorText'}>
+							{messages.VALIDATION_USERNAME_MAXLENGTH_ERROR}
+						</span>
+					)}
+					{(errors.username as FieldError)?.type === 'minLength' && (
+						<span className={'errorText'}>
+							{messages.VALIDATION_USERNAME_MINLENGTH_ERROR}
+						</span>
+					)}
+					{(errors.username as FieldError)?.type === 'pattern' && (
+						<span className={'errorText'}>
+							{messages.VALIDATION_USERNAME_PATTERN_ERROR}
+						</span>
+					)}
+					{(errors.username as FieldError)?.type === 'required' && (
+						<span className={'errorText'}>
+							{messages.VALIDATION_USERNAME_REQUIRED_ERROR}
+						</span>
+					)}
 				</Form.Field>
 			</Form.Group>
 
@@ -81,34 +99,34 @@ const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
 						ref={register(validation.password)}
 						type='password'
 					/>
-					{errors.password && <span className={'errorText'}>{messages.VALIDATION_PASSWORD_ERROR}</span>}
+					{errors.password && (
+						<span className={'errorText'}>
+							{messages.VALIDATION_PASSWORD_ERROR}
+						</span>
+					)}
 
 					<div className='text-muted'>
-						<Link to='/request-reset-password'>Forgot your password or username?</Link>
+						<Link to='/request-reset-password'>
+              Forgot your password or username?
+						</Link>
 					</div>
 				</Form.Field>
 			</Form.Group>
 
 			<div className={'mainButtonContainer'}>
-				<Button
-					primary
-					disabled={loading}
-					type='submit'
-				>
-					Login
+				<Button primary disabled={loading} type='submit' className='button'>
+          Login
+				</Button>
+
+				<Button secondary disabled={loading} onClick={handleToggle} className='button'>
+          Login with web3 address
 				</Button>
 			</div>
-			<div>
-				{error?.message && <FilteredError text={error.message}/>}
-			</div>
+			<div>{error?.message && <FilteredError text={error.message} />}</div>
 			<Divider horizontal>Or</Divider>
 			<div className={'mainButtonContainer'}>
-				<Button
-					secondary
-					disabled={loading}
-					onClick={handleToggle}
-				>
-					Login with web3 address
+				<Button onClick={() => history.push('/signup')} type='button' className='button'>
+					Sign-up
 				</Button>
 			</div>
 		</Form>
@@ -116,20 +134,25 @@ const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
 };
 
 export default styled(LoginForm)`
-	.mainButtonContainer {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
+  .mainButtonContainer {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+  }
 
-	input.error {
-		border-style: solid;
-		border-width: 1px;
-		border-color: red_secondary;
-	}
+  .button {
+	width: 80%;
+	margin: 4px 0;
+	height: 40px;
+  }
 
-	.errorText {
-		color: red_secondary;
-	}
+  input.error {
+    border-style: solid;
+    border-width: 1px;
+    border-color: red_secondary;
+  }
+
+  .errorText {
+    color: red_secondary;
+  }
 `;

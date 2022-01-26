@@ -9,7 +9,7 @@ import Web2Signup from '../../components/Signup/Web2Signup';
 import Web3Signup from '../../components/Signup/Web3Signup';
 
 interface Props {
-	className?: string
+    className?: string
 }
 
 const Signup = ({ className }: Props) => {
@@ -18,8 +18,8 @@ const Signup = ({ className }: Props) => {
 
 	return (
 		<Grid className={className}>
-			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={4} widescreen={4}/>
-			<Grid.Column mobile={16} tablet={12} computer={8} largeScreen={8} widescreen={8}>
+			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={5} widescreen={5}/>
+			<Grid.Column mobile={16} tablet={12} computer={8} largeScreen={6} widescreen={6}>
 				{ displayWeb2
 					? <Web2Signup toggleWeb2Signup={toggleWeb2Signup}/>
 					: <Web3Signup toggleWeb2Signup={toggleWeb2Signup}/>

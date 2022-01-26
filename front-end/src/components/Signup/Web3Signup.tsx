@@ -197,8 +197,18 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 							primary
 							disabled={loading}
 							type='submit'
+							className='button'
 						>
 							Sign-up
+						</Button>
+
+						<Button
+							secondary
+							disabled={loading}
+							onClick={handleToggle}
+							className='button'
+						>
+					Sign-up with username
 						</Button>
 					</div>
 				</>
@@ -208,12 +218,8 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 			</div>
 			<Divider horizontal>Or</Divider>
 			<div className={'mainButtonContainer'}>
-				<Button
-					secondary
-					disabled={loading}
-					onClick={handleToggle}
-				>
-					Sign-up with username
+				<Button onClick={() => history.push('/login')} type='button' className='button'>
+					Login
 				</Button>
 			</div>
 		</Form>
@@ -222,11 +228,15 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 
 export default styled(SignupForm)`
 	.mainButtonContainer {
-		align-items: center;
 		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		margin-top: 3rem;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.button {
+		width: 80%;
+		margin: 4px 0;
+		height: 40px;
 	}
 
 	input.error {
